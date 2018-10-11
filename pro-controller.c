@@ -15,6 +15,18 @@ MODULE_VERSION("0.01");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Driver for Switch Pro Controller using USB-C cable");
 
+
+/***************
+ * Struct Defs *
+ ***************/
+struct pro_controller {
+        spinlock_t lock;
+        struct hid_device *hdev;
+        struct mutex mutex;
+};
+
+
+
 /* Table of USB ID's this driver supports */
 static const struct hid_device_id pro_controller_table[] = {
         {
@@ -32,6 +44,8 @@ MODULE_DEVICE_TABLE(hid, pro_controller_table);
 static int pro_controller_probe(struct hid_device *dev, const struct hid_device_id *id) 
 {
         hid_info(dev, "Pro Controller plugged in, probing\n");
+        hid_info(dev, "Starting device");
+        hid_hw_start(dev, 0);
         return 0;
 }
 
